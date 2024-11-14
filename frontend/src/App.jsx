@@ -2,11 +2,12 @@ import { lazy, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtactRoute from "./Components/auth/ProtactRoute";
 
+
 const MainContainer = lazy(() => import("./Components/MainContainer"));
 const Login = lazy(() => import("./pages/Login"));
 const Chat = lazy(() => import("./pages/Chat"));
 const Group = lazy(() => import("./pages/Group"));
-
+const PageNotFound =lazy(()=>import('./Components/PageNotFound'))
 function App() {
   const user = true;
   return (
@@ -26,6 +27,7 @@ function App() {
             </ProtactRoute>
           }
         />
+        <Route path="*" element={<PageNotFound/>}/>
       </Routes>
     </BrowserRouter>
   );
