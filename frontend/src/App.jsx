@@ -1,6 +1,7 @@
 import { lazy, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtactRoute from "./Components/auth/ProtactRoute";
+import Sidebar from "./Components/Sidebar";
 
 
 const MainContainer = lazy(() => import("./Components/MainContainer"));
@@ -12,12 +13,14 @@ function App() {
   const user = true;
   return (
     <BrowserRouter>
+    
+    
       <Routes>
         <Route element={<ProtactRoute user={user} />}>
-          <Route path="/" element={<MainContainer />} />
+          <Route path="/" element={<Sidebar><MainContainer/></Sidebar>} />
 
-          <Route path="/chat/:id" element={<Chat />} />
-          <Route path="/groups" element={<Group />} />
+          <Route path="/chat/:id" element={<Sidebar><Chat/></Sidebar>} />
+          <Route path="/groups" element={<Sidebar><Group/></Sidebar>} />
         </Route>
         <Route
           path="/login"
@@ -29,6 +32,7 @@ function App() {
         />
         <Route path="*" element={<PageNotFound/>}/>
       </Routes>
+      
     </BrowserRouter>
   );
 }
