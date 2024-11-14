@@ -111,5 +111,21 @@ const userLogin = async (req, res) => {
       });
     }
   };
-
-export { userRegister,userLogin };
+// logout 
+const logout= async (req,res)=>{
+    try{
+        res.cookie("jwt",'',{
+            maxAge:0
+        })
+        return res.status(200).json({
+            success:true,
+            message:"logout successful"
+        })
+    }catch(err){
+        return res.status(500).json({
+            success:false,
+            message:err.message
+        })
+    }
+}
+export { userRegister,userLogin,logout };
