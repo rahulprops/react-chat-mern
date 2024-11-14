@@ -1,5 +1,6 @@
 import user from "../modal/UserModal.js";
 import bcrypt from "bcrypt";
+import jwtToken from "../utils/JwtToken.js";
 
 // Register User
 const userRegister = async (req, res) => {
@@ -45,6 +46,15 @@ const userRegister = async (req, res) => {
       userphoto,
     });
     await newuser.save();
+    if(newuser){
+        await newuser.save();
+          await jwtToken(newuser._id,res)
+    }else{
+        return res.status(400).json({
+            success:false,
+            message:"user not create "
+        })
+    }
 
     // Respond with success
     return res.status(201).json({
@@ -63,5 +73,43 @@ const userRegister = async (req, res) => {
     });
   }
 };
+// user login
+const userLogin = async (req, res) => {
+    try {
+      const { username, userpassword } = req.body;
+  
+      // Find the user by username
+      const finduser = await user.findOne({ username: username });
+      if (!finduser) {
+        return res.status(400).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+  
+      // Compare the provided password with the stored password hash
+      const comparepass = await bcrypt.compare(userpassword, finduser.password);
+      if (!comparepass) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please enter the correct password'
+        });
+      }
+     await jwtToken(finduser._id,res)
+      // Login successful response
+      return res.status(200).json({
+        success: true,
+        message: 'Login successful',
+        user:{
+             name:finduser.fullname
+        }
+      });
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        message: err.message
+      });
+    }
+  };
 
-export { userRegister };
+export { userRegister,userLogin };
