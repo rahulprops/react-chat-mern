@@ -1,5 +1,6 @@
 // import message from "../modal/MessageModal"
 
+import conversetion from "../modal/Coversesesion.js"
 import message from "../modal/MessageModal.js"
 import user from "../modal/UserModal.js"
 
@@ -36,14 +37,39 @@ const getUserSearch= async (req,res)=>{
     }
 }
 // get current user
-const getCurrentUsers= async (req,res)=>{
-    try{
-        console.log("get current users")
-    }catch(err){
+const getCurrentUsers = async (req, res) => {
+    try {
+        const currentUserId = req.user._id;
+        const currentChatters = await conversetion.find({
+            participants: currentUserId
+        }).sort({ updatedAt: -1 });
+
+        if (!currentChatters || currentChatters.length === 0) {
+            return res.status(200).json({ currentChatters: [] });
+        }
+
+        const participantIds = currentChatters.reduce((ids, conversation) => {
+            const otherParticipants = conversation.participants.filter(id => id.toString() !== currentUserId.toString());
+            return [...ids, ...otherParticipants];
+        }, []);
+
+        const uniqueParticipantIds = [...new Set(participantIds)]; // Remove duplicates if needed
+
+        const users = await user.find({
+            _id: { $in: uniqueParticipantIds }
+        }).select("-password -email");
+
+        return res.status(200).json({
+            success: true,
+            message: "User connections found successfully",
+            users
+        });
+    } catch (err) {
         return res.status(500).json({
-            sucess:false,
-            message:err.message,
-        })
+            success: false,
+            message: err.message
+        });
     }
-}
+};
+
 export {getUserSearch,getCurrentUsers}
