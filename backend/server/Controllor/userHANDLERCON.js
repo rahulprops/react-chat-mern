@@ -35,4 +35,15 @@ const getUserSearch= async (req,res)=>{
         })
     }
 }
-export {getUserSearch}
+// get current user
+const getCurrentUsers= async (req,res)=>{
+    try{
+        console.log("get current users")
+    }catch(err){
+        return res.status(500).json({
+            sucess:false,
+            message:err.message,
+        })
+    }
+}
+export {getUserSearch,getCurrentUsers}
