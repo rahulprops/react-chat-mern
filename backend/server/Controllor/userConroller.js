@@ -114,7 +114,7 @@ const userLogin = async (req, res) => {
 // logout 
 const logout= async (req,res)=>{
     try{
-        res.cookie("jwt",'',{
+        res.cookie("token",'',{
             maxAge:0
         })
         return res.status(200).json({
