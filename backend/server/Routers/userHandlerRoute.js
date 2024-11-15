@@ -4,5 +4,5 @@ import { getUserSearch } from "../Controllor/userHANDLERCON.js";
 // import { getUserSearch } from "../Controllor/userHANDLERCON.js";
 getUserSearch
 const router=Router()
- router.get("/",AuthLogin,getUserSearch)
+ router.get("/search",AuthLogin,getUserSearch)
 export default router;
