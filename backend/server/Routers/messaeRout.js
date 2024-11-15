@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { sendMessage } from "../Controllor/SendmessageCon.js";
+import { getMessage, sendMessage } from "../Controllor/SendmessageCon.js";
 import { AuthLogin } from "../middleware/AuthLogin.js";
 
 
 const router =Router()
-router.get("/message/:id",AuthLogin,sendMessage)
+router.post("/message/:id",AuthLogin,sendMessage)
+router.get("/message/:id",AuthLogin,getMessage)
 export default router;

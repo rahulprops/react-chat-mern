@@ -16,17 +16,17 @@ const AuthLogin = async (req, res, next) => {
 
     // Verify the token
        const decoded = await jwt.verify(token, process.env.JWT_SECURE_KEY);
-       console.log(decoded)
+    //    console.log(decoded)
 
       // Optionally, you can find and attach the user to the request object
-      const authenticatedUser = await user.findById(decoded.userid);
+      const authenticatedUser = await user.findById(decoded.userid).select("-password");
       if (!authenticatedUser) {
         return res.status(404).json({
           success: false,
           message: "User not found",
         });
       }
-
+    //  console.log(authenticatedUser)
       req.user = authenticatedUser; // Attach user data to request
       next();
 
