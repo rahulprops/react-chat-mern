@@ -1,9 +1,14 @@
 import React, { useRef, useState } from "react";
 import { FaCamera } from "react-icons/fa";
-
+import axios from 'axios'
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [image, setImage] = useState(null);
+  const [login,setLogin]=useState({
+    username:'',
+    password:''
+  })
+  console.log(login)
   const fileInputRef = useRef(null);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -19,6 +24,24 @@ const Login = () => {
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
+  // const handleLogin=(event)=>{
+     
+  // }
+   const sendLoging= async (e)=>{
+    e.preventDefault()
+    try{
+      const response= await axios.post("http://localhost:7878/api/user/login",{
+        username:login.username,
+        userpassword:login.password
+        
+      });
+      alert("login")
+      console.log(response)
+    }catch(error){
+      alert(`Login failed: ${error.response?.data?.message || error.message}`);
+    }
+    //  alert("login")
+   }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -29,22 +52,26 @@ const Login = () => {
         {isLogin ? (
           <>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-1">Email</label>
+              <label className="block text-gray-700 mb-1">username</label>
               <input
-                type="email"
+                type="text"
+                value={login.username}
+                onChange={(event)=>setLogin({ ...login,username:event.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter your email"
+                placeholder="Enter your username"
               />
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 mb-1">Password</label>
               <input
                 type="password"
+                value={login.password}
+                onChange={(event)=>setLogin({ ...login, password:event.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
               />
             </div>
-            <button className="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition duration-200">
+            <button onClick={sendLoging} className="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition duration-200">
               Login
             </button>
           </>

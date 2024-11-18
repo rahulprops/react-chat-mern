@@ -10,7 +10,7 @@ const Chat = lazy(() => import("./pages/Chat"));
 const Group = lazy(() => import("./pages/Group"));
 const PageNotFound =lazy(()=>import('./Components/PageNotFound'))
 function App() {
-  const user = true;
+  const user = false;
   return (
     <BrowserRouter>
     
