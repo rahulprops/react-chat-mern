@@ -8,7 +8,7 @@ const Login = () => {
     username:'',
     password:''
   })
-  console.log(login)
+  // console.log(login)
   const fileInputRef = useRef(null);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -35,8 +35,11 @@ const Login = () => {
         userpassword:login.password
         
       });
-      alert("login")
-      console.log(response)
+      // alert("login")
+      // console.log(response.data)
+      if(response.data.success===true){
+        alert(response.data.message)
+      }
     }catch(error){
       alert(`Login failed: ${error.response?.data?.message || error.message}`);
     }
