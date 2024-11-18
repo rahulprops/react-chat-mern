@@ -13,6 +13,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(cookieParser());
 app.use(cors())
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/api/user/", userRout);
 app.use("/api/user", messageRout);
