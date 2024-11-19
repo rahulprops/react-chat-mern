@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import axios from 'axios'
+import { useAuth } from "../Context/AuthContext";
+import Cookies from 'js-cookie'
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [image, setImage] = useState(null);
@@ -8,7 +10,9 @@ const Login = () => {
     username:'',
     password:''
   })
+  const {setAuthUser}=useAuth();
   // console.log(login)
+  // console.log(setAuthUser)
   const fileInputRef = useRef(null);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -30,15 +34,20 @@ const Login = () => {
    const sendLoging= async (e)=>{
     e.preventDefault()
     try{
-      const response= await axios.post("http://localhost:7878/api/user/login",{
-        username:login.username,
-        userpassword:login.password
-        
+      const response = await axios.post("http://localhost:7878/api/user/login", {
+        username: login.username,
+        userpassword: login.password,
+      }, {
+        withCredentials: true, // Allows sending and receiving cookies
       });
       // alert("login")
       // console.log(response.data)
       if(response.data.success===true){
         alert(response.data.message)
+        // setAuthUser(response.data)
+        const tokens=Cookies.get("token")
+        // console.log("login token"+ tokens)
+        setAuthUser(tokens)
       }
     }catch(error){
       alert(`Login failed: ${error.response?.data?.message || error.message}`);

@@ -9,7 +9,7 @@ const jwtToken = (userid, res) => {
     // Set the cookie in the response
     res.cookie('token', token, {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
-      httpOnly: true, // Secure the cookie by making it inaccessible via JavaScript in the browser
+      httpOnly: false, // Secure the cookie by making it inaccessible via JavaScript in the browser
       sameSite: 'strict', // Prevent CSRF by enforcing same-site cookie policy
     
     });
